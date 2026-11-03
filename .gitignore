@@ -1,0 +1,26 @@
+# Secrets — never commit (Meta / Spark / Modal keys live in .env)
+.env
+.env.*
+!.env.example
+muse_ai_texture/.env
+
+# Python / Blender
+__pycache__/
+*.pyc
+*.blend1
+.venv-splat/
+.venv/
+
+# Generated artifacts
+muse_ai_texture.zip
+muse_ai_texture/muse_website/
+muse_ai_texture/generated/
+generated/
+output/
+data/
+.playwright-cli/
+.DS_Store
+
+# Local agent state
+.claude/skills/scroll-experience/
+skills-lock.json
