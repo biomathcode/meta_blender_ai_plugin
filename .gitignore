@@ -12,7 +12,6 @@ __pycache__/
 .venv/
 
 # Generated artifacts
-muse_ai_texture.zip
 muse_ai_texture/muse_website/
 muse_ai_texture/generated/
 generated/
