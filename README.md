@@ -1,8 +1,8 @@
 # Muse Harness — Blender addon (Meta Muse Image 1.0)
 
 Generate textures with **Meta Muse Image 1.0** and use them in Blender
-materials and **Geometry Nodes** — the [ComfyUI-BlenderAI-node](https://github.com/AIGODLIKE/ComfyUI-BlenderAI-node)
-workflow, but **Meta Muse only** (no ComfyUI, no Stable Diffusion).
+materials and **Geometry Nodes** —
+workflow, but **Meta Muse only**. 
 
 Prompt → `muse-image-1.0` on the Meta Model API → texture on your mesh,
 plus a Geometry Nodes group that displaces geometry from the same image.
@@ -303,7 +303,7 @@ npx skills add roble3/cc-blender-skill@blender-modeling
 ## Use — Geometry Nodes
 
 Geometry Nodes cannot call HTTP, so the addon bridges it (same constraint the
-ComfyUI plugin works around with its server):
+ works around with its server):
 
 - **Add Muse GN Modifier** builds a reusable **`Muse GN Texture`** node group
   and puts it on the active mesh. Group inputs: `Geometry`, `Image`,
@@ -318,42 +318,42 @@ ComfyUI plugin works around with its server):
 
 ## API reference (Meta Model API)
 
-| | |
-|---|---|
-| Base URL | `https://api.meta.ai/v1` |
-| Model | `muse-image-1.0` |
+|          |                                                                           |
+| -------- | ------------------------------------------------------------------------- |
+| Base URL | `https://api.meta.ai/v1`                                                  |
+| Model    | `muse-image-1.0`                                                          |
 | Generate | `POST /images/generations` `{model, prompt, size, n}` → `data[].b64_json` |
-| Edit | `POST /images/edits` `{model, prompt, images[].image_url, size}` |
-| Auth | `Authorization: Bearer <META_API_KEY>`, `x-api-version: 1.0.0` |
-| Price | ~$0.01 / image (Meta list price) |
+| Edit     | `POST /images/edits` `{model, prompt, images[].image_url, size}`          |
+| Auth     | `Authorization: Bearer <META_API_KEY>`, `x-api-version: 1.0.0`            |
+| Price    | ~$0.01 / image (Meta list price)                                          |
 
 ## Files
 
-| File | Role |
-|---|---|
-| [__init__.py](muse_ai_texture/__init__.py) | Addon entry point / registration |
-| [api_client.py](muse_ai_texture/api_client.py) | Meta API client + .env loading (bpy-free, testable) |
-| [operators.py](muse_ai_texture/operators.py) | Async generate/edit, apply, GN operators |
-| [nodes.py](muse_ai_texture/nodes.py) | PBR material builder + `Muse GN Texture` group |
-| [panels.py](muse_ai_texture/panels.py) | 3D View / Shader / Geometry Nodes UI |
-| [properties.py](muse_ai_texture/properties.py) | Scene/Object settings + history |
-| [preferences.py](muse_ai_texture/preferences.py) | Key override, endpoints, folders |
-| [spark_client.py](muse_ai_texture/spark_client.py) | Muse Spark chat + tool-calling client |
-| [agent_loop.py](muse_ai_texture/agent_loop.py) | Agentic loop (Spark ↔ tools) |
-| [agent_tools.py](muse_ai_texture/agent_tools.py) | 37 Blender tools for the agent |
-| [mcp_bridge.py](muse_ai_texture/mcp_bridge.py) | Blender MCP socket bridge (port 9876) |
-| [chat_operators.py](muse_ai_texture/chat_operators.py) | Async chat send/stop/clear, MCP check |
-| [modal_client.py](muse_ai_texture/modal_client.py) | Modal credentials, generated Modal app (`bpy` image, parallel frames, ffmpeg), CLI runner (bpy-free, testable) |
+| File                                                                                                        | Role                                                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [__init__.py](muse_ai_texture/__init__.py)                                                                  | Addon entry point / registration                                                                                                                                          |
+| [api_client.py](muse_ai_texture/api_client.py)                                                              | Meta API client + .env loading (bpy-free, testable)                                                                                                                       |
+| [operators.py](muse_ai_texture/operators.py)                                                                | Async generate/edit, apply, GN operators                                                                                                                                  |
+| [nodes.py](muse_ai_texture/nodes.py)                                                                        | PBR material builder + `Muse GN Texture` group                                                                                                                            |
+| [panels.py](muse_ai_texture/panels.py)                                                                      | 3D View / Shader / Geometry Nodes UI                                                                                                                                      |
+| [properties.py](muse_ai_texture/properties.py)                                                              | Scene/Object settings + history                                                                                                                                           |
+| [preferences.py](muse_ai_texture/preferences.py)                                                            | Key override, endpoints, folders                                                                                                                                          |
+| [spark_client.py](muse_ai_texture/spark_client.py)                                                          | Muse Spark chat + tool-calling client                                                                                                                                     |
+| [agent_loop.py](muse_ai_texture/agent_loop.py)                                                              | Agentic loop (Spark ↔ tools)                                                                                                                                              |
+| [agent_tools.py](muse_ai_texture/agent_tools.py)                                                            | 37 Blender tools for the agent                                                                                                                                            |
+| [mcp_bridge.py](muse_ai_texture/mcp_bridge.py)                                                              | Blender MCP socket bridge (port 9876)                                                                                                                                     |
+| [chat_operators.py](muse_ai_texture/chat_operators.py)                                                      | Async chat send/stop/clear, MCP check                                                                                                                                     |
+| [modal_client.py](muse_ai_texture/modal_client.py)                                                          | Modal credentials, generated Modal app (`bpy` image, parallel frames, ffmpeg), CLI runner (bpy-free, testable)                                                            |
 | [showcase.py](muse_ai_texture/showcase.py) + [showcase_operators.py](muse_ai_texture/showcase_operators.py) | Product Showcase core + operators: Low/Medium/High LOD creation, bake onto Medium/Low, ten animation variants, CMS seeding, multi-GLB + site export with quality switcher |
-| [site_harness.py](muse_ai_texture/site_harness.py) | Build harness (bpy-free): site validation, free-port pick, live-server probe, manifest + `serve.py` generation |
-| [web_cms.py](muse_ai_texture/web_cms.py) | In-Blender CMS / i18n logic: seed copy (en+hi), locale building with default-language fallback (bpy-free, testable) |
-| [site_template.py](muse_ai_texture/site_template.py) | Generated Three.js + GSAP ScrollTrigger showcase template (embedded CMS, language switcher) |
-| [cloud_operators.py](muse_ai_texture/cloud_operators.py) | Async cloud render (camera still/animation), Modal test, output folder |
-| [splat_core.py](muse_ai_texture/splat_core.py) | Splat segmentation core (NumPy only, testable): orbit cameras, point rasteriser, depth-tested multi-view voting, voxel instance splitting |
-| [sam_client.py](muse_ai_texture/sam_client.py) | SAM 3.1 client (bpy-free): one Meta Model API `/v1/responses` request per typed object, streamed wire-text parsing via `meta_sam_parser` into full-frame masks |
-| [splat_worker.py](muse_ai_texture/splat_worker.py) | External splat worker (never imported by Blender): renders views, calls SAM 3.1 via `sam_client` with the addon's Meta key, votes, writes labels |
-| [splat_operators.py](muse_ai_texture/splat_operators.py) | Splat operators: SPZ import, point export, worker launch with live progress, GN Delete-Geometry separation into native splat objects, worker-env setup/check |
-| [skills.py](muse_ai_texture/skills.py) + [skills/](muse_ai_texture/skills) | Skill catalogue (authored + GitHub, MIT) |
+| [site_harness.py](muse_ai_texture/site_harness.py)                                                          | Build harness (bpy-free): site validation, free-port pick, live-server probe, manifest + `serve.py` generation                                                            |
+| [web_cms.py](muse_ai_texture/web_cms.py)                                                                    | In-Blender CMS / i18n logic: seed copy (en+hi), locale building with default-language fallback (bpy-free, testable)                                                       |
+| [site_template.py](muse_ai_texture/site_template.py)                                                        | Generated Three.js + GSAP ScrollTrigger showcase template (embedded CMS, language switcher)                                                                               |
+| [cloud_operators.py](muse_ai_texture/cloud_operators.py)                                                    | Async cloud render (camera still/animation), Modal test, output folder                                                                                                    |
+| [splat_core.py](muse_ai_texture/splat_core.py)                                                              | Splat segmentation core (NumPy only, testable): orbit cameras, point rasteriser, depth-tested multi-view voting, voxel instance splitting                                 |
+| [sam_client.py](muse_ai_texture/sam_client.py)                                                              | SAM 3.1 client (bpy-free): one Meta Model API `/v1/responses` request per typed object, streamed wire-text parsing via `meta_sam_parser` into full-frame masks            |
+| [splat_worker.py](muse_ai_texture/splat_worker.py)                                                          | External splat worker (never imported by Blender): renders views, calls SAM 3.1 via `sam_client` with the addon's Meta key, votes, writes labels                          |
+| [splat_operators.py](muse_ai_texture/splat_operators.py)                                                    | Splat operators: SPZ import, point export, worker launch with live progress, GN Delete-Geometry separation into native splat objects, worker-env setup/check              |
+| [skills.py](muse_ai_texture/skills.py) + [skills/](muse_ai_texture/skills)                                  | Skill catalogue (authored + GitHub, MIT)                                                                                                                                  |
 
 ## Troubleshooting
 
